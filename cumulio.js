@@ -1,5 +1,5 @@
 /**
- * Cumul.io API SDK  --  version 0.0.5 / 2016-06-03
+ * Cumul.io API SDK  --  version 0.0.6 / 2016-06-03
  * API : WebSocket, language : Node.js
  *
  * Need some help? Contact us at support@cumul.io

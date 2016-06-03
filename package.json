@@ -3,8 +3,12 @@
   "description": "Connect to the Cumul.io API",
   "author": "Cumul.io Team <support@cumul.io>",
   "homepage": "https://cumul.io",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cumulio/cumul.io-sdk-nodejs"
+  },
   "main": "cumulio",
   "dependencies": {
     "bluebird": "3.0.5",
