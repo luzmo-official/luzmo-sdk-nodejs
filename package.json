@@ -1,0 +1,17 @@
+{
+  "name": "cumulio",
+  "description": "Connect to the Cumul.io API",
+  "author": "Cumul.io Team <support@cumul.io>",
+  "homepage": "https://cumul.io",
+  "version": "0.0.5",
+  "license": "MIT",
+  "main": "cumulio",
+  "dependencies": {
+    "bluebird": "3.0.5",
+    "pako": "0.2.8",
+    "socket.io-client": "0.9.17"
+  },
+  "engines": {
+    "node": "4.4.x"
+  }
+}
