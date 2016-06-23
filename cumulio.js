@@ -1,5 +1,5 @@
 /**
- * Cumul.io API SDK  --  version 0.0.6 / 2016-06-03
+ * Cumul.io API SDK  --  version 0.0.7 / 2016-06-21
  * API : WebSocket, language : Node.js
  *
  * Need some help? Contact us at support@cumul.io
@@ -24,6 +24,7 @@ function Cumulio(options) {
   if (t._isEmpty(options.api_token) || !t._isString(options.api_token))
     throw new Error('You must provide a valid API token. Contact the Cumul.io-team if in doubt!');
 
+  t.app = t._isEmpty(options.host) ? Cumulio.APP : options.app;
   t.host = t._isEmpty(options.host) ? Cumulio.HOST : options.host;
   t.port = t._isEmpty(options.port) ? Cumulio.PORT : options.port;
   t.api_version = t._isEmpty(options.api_version) ? Cumulio.API_VERSION : options.api_version;
@@ -35,6 +36,7 @@ function Cumulio(options) {
   t._connect();
 }
 
+Cumulio.APP = 'https://app.cumul.io';
 Cumulio.HOST = 'https://api.cumul.io';
 Cumulio.PORT = '443';
 Cumulio.API_VERSION = '0.1.0';
@@ -228,6 +230,17 @@ Cumulio.prototype.close = function() {
 };
 
 
+/* Embedding */
+
+/**
+ * iframe integration
+ */
+Cumulio.prototype.iframe = function(dashboard_id, authorization) {
+  var t = this;
+  return t.app + '/s/' + dashboard_id + '?key=' + authorization.id + '&token=' + authorization.token;
+}
+
+
 /* Helpers */
 
 /**
@@ -265,7 +278,7 @@ Cumulio.prototype._emit = function(event, data) {
   var t = this;
   return t._onConnect().then(function() {
     return new Promise(function(resolve, reject) {
-      data.uid = t.api_key;
+      data.key = t.api_key;
       data.token = t.api_token;
       data.version = t.api_version;
       t.socket.emit(event, t._compress(data), function(error, payload) {
