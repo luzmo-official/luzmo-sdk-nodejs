@@ -39,6 +39,8 @@ client.create(
   });
 ```
 
+See `example-embedding.js` for an example of how to use the API to securely embed dashboards in a web page (with serverside pre-filtering of the data that the end-user can query).
+
 ## Documentation
 
 The API documentation (available services and methods) can be found [here](http://docs.cumul.io).
