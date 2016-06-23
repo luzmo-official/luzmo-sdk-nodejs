@@ -21,8 +21,8 @@ var server = http.createServer(function(request, response) {
       {
         clause: 'where',
         origin: 'global',
-        securable_id: '4db23218-1bd5-44f9-bd2a-7e6051d69166',   // Landings SFO
-        column_id: '3e2b2a5d-9221-4a70-bf26-dfb85be868b8',      // Operating Airline
+        securable_id: '4db23218-1bd5-44f9-bd2a-7e6051d69166',   // Demo data - United Widgets - Sales
+        column_id: '3e2b2a5d-9221-4a70-bf26-dfb85be868b8',      // Product
         expression: '? = ?',
         value: 'Damflex'
       }
