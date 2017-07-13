@@ -10,6 +10,11 @@ var client = new Cumulio({
 // Run a web server
 var server = http.createServer(function(request, response) {
 
+  if (request.url !== '/') {
+    response.statusCode = 404;
+    return response.end('Not Found');
+  }
+
   // Create a temporary token
   var dashboardId = '6ae6a28d-b074-494f-a9bb-6b6ee7432973';
   client.create('authorization', {
