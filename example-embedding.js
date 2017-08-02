@@ -16,7 +16,7 @@ var server = http.createServer(function(request, response) {
   }
 
   // Create a temporary token
-  var dashboardId = '6ae6a28d-b074-494f-a9bb-6b6ee7432973';
+  var dashboardId = '1d5db81a-3f88-4c17-bb4c-d796b2093dac';
   client.create('authorization', {
     type: 'temporary',
     // List of data filters to apply, so clients can only access their own data
