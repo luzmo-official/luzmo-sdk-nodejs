@@ -61,6 +61,8 @@ Cumulio.prototype.create = function(resource, properties, associations) {
     })
     .then(function(instance) {
       // Set associations on the newly created resource
+      if (associations.length === 0)
+        return instance;
       var promises = associations.map(function(association) {
         return t.associate(resource, instance.id, association);
       });
