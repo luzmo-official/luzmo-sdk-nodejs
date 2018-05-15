@@ -24,7 +24,7 @@ function Cumulio(options) {
   if (t._isEmpty(options.api_token) || !t._isString(options.api_token))
     throw new Error('You must provide a valid API token. Contact the Cumul.io-team if in doubt!');
 
-  t.app = t._isEmpty(options.host) ? Cumulio.APP : options.app;
+  t.app = t._isEmpty(options.app) ? Cumulio.APP : options.app;
   t.host = t._isEmpty(options.host) ? Cumulio.HOST : options.host;
   t.port = t._isEmpty(options.port) ? Cumulio.PORT : options.port;
   t.api_version = t._isEmpty(options.api_version) ? Cumulio.API_VERSION : options.api_version;
