@@ -1,11 +1,13 @@
 /**
- * Cumul.io API SDK  --  version 0.0.7 / 2016-06-21
- * API : WebSocket, language : Node.js
+ * Cumul.io API SDK
+ * API : REST, language : Node.js
  *
  * Need some help? Contact us at support@cumul.io
  */
 
-/**f
+'use strict';
+
+/**
  * Create a new API client instance.
  *
  * options          Object, options to set.
@@ -30,10 +32,6 @@ function Cumulio(options) {
   t.api_version = t._isEmpty(options.api_version) ? Cumulio.API_VERSION : options.api_version;
   t.api_key = options.api_key;
   t.api_token = options.api_token;
-  t.connected = false;
-  t.listeners = [];
-
-  t._connect();
 }
 
 Cumulio.APP = 'https://app.cumul.io';
@@ -53,15 +51,13 @@ Cumulio.API_VERSION = '0.1.0';
  */
 Cumulio.prototype.create = function(resource, properties, associations) {
   var t = this;
-  if (t._isEmpty(associations))
-    associations = []; // Associations is an optional argument
   return t._emit(resource, {
-      action: 'create',
-      properties: properties
-    })
+    action: 'create',
+    properties: properties
+  })
     .then(function(instance) {
       // Set associations on the newly created resource
-      if (associations.length === 0)
+      if (t._isEmpty(associations) || associations.length === 0)
         return instance;
       var promises = associations.map(function(association) {
         return t.associate(resource, instance.id, association);
@@ -228,7 +224,6 @@ Cumulio.prototype.query = function(filter) {
  */
 Cumulio.prototype.close = function() {
   var t = this;
-  t.socket.disconnect();
 };
 
 
@@ -237,40 +232,36 @@ Cumulio.prototype.close = function() {
 /**
  * iframe integration
  */
-Cumulio.prototype.iframe = function(dashboard_id, authorization) {
+Cumulio.prototype.iframe = function(dashboardId, authorization) {
   var t = this;
-  return t.app + '/s/' + dashboard_id + '?key=' + authorization.id + '&token=' + authorization.token;
-}
+  return t.app + '/s/' + dashboardId + '?key=' + authorization.id + '&token=' + authorization.token;
+};
 
 
 /* Helpers */
 
 /**
- * Set up connection
+ * Set up connection -- no persistent connection needed
  */
 Cumulio.prototype._connect = function() {
   var t = this;
-  t.socket = socket.connect(t.host + ':' + t.port, {'force new connection': true});
-  t.socket.on('connect', function() {
-    t.connected = true;
-    // Notify anyone listening for a connection to be made.
-    t.listeners.forEach(function(resolve) {
-      resolve();
-    });
-    t.listeners = [];
-  });
 };
 
 /**
- * Buffer connections 
+ * Buffer connections
  */
 Cumulio.prototype._onConnect = function() {
   var t = this;
-  return new Promise(function(resolve, reject) {
-    if (t.connected)
-      return resolve();
-    t.listeners.push(resolve);
-  });
+};
+
+Cumulio.HTTP_METHOD = {
+  'get': 'SEARCH',
+  'create': 'POST',
+  'update': 'PATCH',
+  'delete': 'DELETE',
+  'associate': 'LINK',
+  'dissociate': 'UNLINK',
+  'validate': 'POST'
 };
 
 /**
@@ -278,18 +269,25 @@ Cumulio.prototype._onConnect = function() {
  */
 Cumulio.prototype._emit = function(event, data) {
   var t = this;
-  return t._onConnect().then(function() {
-    return new Promise(function(resolve, reject) {
-      data.key = t.api_key;
-      data.token = t.api_token;
-      data.version = t.api_version;
-      t.socket.emit(event, t._compress(data), function(error, payload) {
-        if (error)
-          return reject(error);
-        resolve(t._decompress(payload));
-      });
+
+  data.key = t.api_key;
+  data.token = t.api_token;
+  data.version = t.api_version;
+
+  return requestp({
+    uri: t.host + ':' + t.port + '/' + t.api_version + '/' + event,
+    json: true,
+    body: data,
+    method: Cumulio.HTTP_METHOD[data.action]
+  })
+    .then((body) => {
+      return body;
+    })
+    .catch((error) => {
+      if (!t._isEmpty(error.error))
+        throw error.error;
+      throw error;
     });
-  });
 };
 
 /**
@@ -297,7 +295,7 @@ Cumulio.prototype._emit = function(event, data) {
  */
 
 Cumulio.prototype._isInt = function(value) {
-  return !isNaN(value) && parseInt(Number(value)) == value;
+  return !isNaN(value) && parseInt(Number(value), 10) === value;
 };
 
 Cumulio.prototype._isNumeric = function(value) {
@@ -332,21 +330,19 @@ Cumulio.prototype._isBoolean = function(value) {
  * Decompress a received payload.
  */
 Cumulio.prototype._decompress = function(payload) {
-  if (payload === null || typeof payload === 'undefined')
-    return payload;
-  return JSON.parse(pako.inflate(payload, {to: 'string'}));
+  return payload;
 };
 
 /**
  * Compress a payload before sending.
  */
 Cumulio.prototype._compress = function(payload) {
-  return pako.deflate(JSON.stringify(payload), {to: 'string'});
+  return payload;
 };
 
 /* Dependencies */
-var pako = require('pako');
-var socket = require('socket.io-client');
 var Promise = require('bluebird');
+var requestp = require('request-promise');
+var request = require('request');
 
 module.exports = Cumulio;

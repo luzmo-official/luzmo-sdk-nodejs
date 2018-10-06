@@ -43,4 +43,4 @@ See `example-embedding.js` for an example of how to use the API to securely embe
 
 ## Documentation
 
-The API documentation (available services and methods) can be found [here](http://documentation.cumul.io/apidocs.html).
+The API documentation (available services and methods) can be found [here](http://developer.cumul.io).

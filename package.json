@@ -3,7 +3,7 @@
   "description": "Connect to the Cumul.io API",
   "author": "Cumul.io Team <support@cumul.io>",
   "homepage": "https://cumul.io",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
   },
   "main": "cumulio",
   "dependencies": {
-    "bluebird": "3.0.5",
-    "pako": "0.2.8",
-    "socket.io-client": "0.9.17"
+    "bluebird": "3.5.2",
+    "request": "2.88.0",
+    "request-promise": "4.2.2"
   }
 }
