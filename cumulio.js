@@ -278,6 +278,7 @@ Cumulio.prototype._emit = function(event, data) {
     uri: t.host + ':' + t.port + '/' + t.api_version + '/' + event,
     json: true,
     body: data,
+    encoding: null,
     method: Cumulio.HTTP_METHOD[data.action]
   })
     .then((body) => {
