@@ -1,1 +1,3 @@
 node_modules/
+examples/example_ts.js
+.vscode

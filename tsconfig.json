@@ -9,16 +9,17 @@
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "dist",
+        "outDir": "./dist",
+        "rootDirs": ["src", "types", "examples"],
         "baseUrl": ".",
         "paths": {
             "*": [
                 "node_modules/*",
-                "src/types/*"
+                "types/*"
             ]
         }
     },
     "include": [
-        "./src/**/*", "example_ts.ts", "./src/types/"
+        "./src/**/*", "examples/example_ts.ts", "./src/types/*"
     ]
 }

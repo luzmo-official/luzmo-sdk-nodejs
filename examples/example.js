@@ -1,9 +1,10 @@
-var Cumulio = require("./src/cumulio");
+var Cumulio = require("../src/cumulio");
 
 // Connect
 var client = new Cumulio({
-  api_key: "< Your API key >",
-  api_token: "< Your API token >",
+  api_key: "7e08974a-93dd-44ae-b297-73fabf1c378f",
+  api_token:
+    "MWdMytqZY5voaa8ewRC1OwoOHFYBN9xc21hOMUjhkCiIFDL7d9S9RUz4cZYhb0WMafmhCqUkJiqCXI9OlLsFWjESIZVNzf7Q0ia1gVS4dhJaQynZWUPwWAUolCSzfm2bEoUckhgb7aP2Hsd3Gc6P3D",
 });
 
 // Example 1: create a new dataset

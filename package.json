@@ -14,7 +14,7 @@
     "type-lint-watch": "tsc -w"
   },
   "main": "./src/cumulio.js",
-  "types": "./src/types/cumulio.d.ts",
+  "types": "./types/cumulio.d.ts",
   "dependencies": {
     "@types/node": "^14.14.32",
     "bluebird": "3.5.2",

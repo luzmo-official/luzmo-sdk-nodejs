@@ -1,4 +1,4 @@
-export = cumulio;
+export default cumulio;
 
 type UUID = string;
 
@@ -19,33 +19,50 @@ declare namespace cumulio {
     port?: string;
   }
 
-  export enum Resource {
-    Authorization = "authorization",
-    User = "user",
-    Group = "group",
-    Securable = "securable",
-    Column = "column",
-    HierarchyLevel = "hierarchylevel",
-    Account = "account",
-    Plugin = "plugin",
-    Locale = "locale",
-    Schedule = "schedule",
-    Country = "country",
-    Share = "share",
-    Tag = "tag",
-    Theme = "theme",
-  }
+  export type Resource =
+    | "authorization"
+    | "user"
+    | "group"
+    | "securable"
+    | "column"
+    | "hierarchylevel"
+    | "account"
+    | "plugin"
+    | "locale"
+    | "schedule"
+    | "country"
+    | "share"
+    | "tag"
+    | "theme";
 
+  /**
+   * Describes Association interface
+   * @attr role
+   * @attr id
+   */
   export interface Association {
-    role: string;
+    role: Resource;
     id: UUID;
   }
 
+  /**
+   * Describes Authorization interface
+   * @attr id
+   * @attr token
+   */
   export interface Authorization {
     id: string;
     token: string;
   }
 
+  /**
+   * Describes Query interface
+   * @attr dimensions
+   * @attr measures
+   * @attr where (Optional)
+   * @attr order (Optional)
+   * @attr limit (Optional)
+   */
   export interface Query {
     dimensions: any[];
     measures: any[];
@@ -58,8 +75,8 @@ declare namespace cumulio {
 declare class cumulio {
   /**
    * Create a new API client instance.
-   * @param options - Cumulio.Options interface, options to set
-   * @example - Contents of Options
+   * @param options Cumulio.Options interface, options to set
+   * @example Contents of Options
    *
    * {
    *    api_key        String (Required), your personal API key
@@ -74,16 +91,10 @@ declare class cumulio {
 
   /**
    * Associate two entities.
-   * @param resource - The type of resource to create. Eg. Resource.User.
-   * @param id       - UUID, the unique identifier of the 1st resource to associate.
-   * @param association - Object, 2nd resource to associate.
-   *
-   * {
-   *  role           String, the role the 2nd resource will take.
-   *  id             UUID, the unique identifier of the 2nd resource.
-   * }
-   *
-   * @param properties - Object with attributes to be updated (e.g. flagUse).
+   * @param resource Resource, the type of resource to create. Eg. Resource.User.
+   * @param id UUID, the unique identifier of the 1st resource to associate.
+   * @param association Association, 2nd resource to associate: {role: String, id: UUID}
+   * @param properties Object with attributes to be updated (e.g. flagUse).
    *
    * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
@@ -102,12 +113,11 @@ declare class cumulio {
   /**
    * Create a new entity.
    *
-   * @param resource - The type of resource to create. Eg. Resource.User.
-   * @param properties - Object, properties of the new resource.
-   * @param associations - Association Array (Optional): associations to set on the newly created resource. Optional.
-   *                  Each association should be of the format { role: ..., id: ... }
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param properties Object, properties of the new resource.
+   * @param associations Association Array (Optional): associations to set on the newly created resource: [{role: String, id: UUID}]
    *
-   * Returns a promise resolving in case of completion, rejecting in case of error.
+   * @returns a promise resolving in case of completion, rejecting in case of error.
    */
   create(
     resource: cumulio.Resource,
@@ -118,25 +128,23 @@ declare class cumulio {
   /**
    * Mark an entity as deleted.
    *
-   * resource         The type of resource to create. Eg. Resource.User.
-   * id               UUID, the unique identifier of the resource to delete.
-   * properties       Object, additional properties needed to delete
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param id UUID, the unique identifier of the resource to delete.
+   * @param properties Object, additional properties needed to delete
    *                  (optional, see API reference for resources to use this with)
    *
-   * Returns a promise resolving in case of completion, rejecting in case of error.
+   * @returns a promise resolving in case of completion, rejecting in case of error.
    */
   delete(resource: cumulio.Resource, id: UUID, properties: any): Promise<any>;
 
   /**
    * Dissociate two entities.
    *
-   * resource         The type of resource to create. Eg. Resource.User.
-   * id               UUID, the unique identifier of the 1st resource to dissociate.
-   * association      Object, 2nd resource to dissociate.
-   * - role           String, the role the 2nd resource has.
-   * - id             UUID, the unique identifier of the 2nd resource.
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param id UUID, the unique identifier of the 1st resource to dissociate.
+   * @param association Object, 2nd resource to dissociate: {role: String, id: UUID}
    *
-   * Returns a promise resolving with the updated resource, rejecting in case of error.
+   * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
   dissociate(
     resource: cumulio.Resource,
@@ -147,11 +155,11 @@ declare class cumulio {
   /**
    * Retrieve one or more entities.
    *
-   * resource         The type of resource to create. Eg. Resource.User.
-   * find             Object, filtering / limiting / paging options.
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param filter Object, filtering / limiting / paging options.
    *                  Reference: http://docs.sequelizejs.com/en/1.7.0/docs/models/#findall-search-for-multiple-elements-in-the-database
    *
-   * Returns a promise resolving with the resources retrieved, rejecting in case of error.
+   * @returns a promise resolving with the resources retrieved, rejecting in case of error.
    */
   get(resource: cumulio.Resource, filter: any): Promise<any>;
 
@@ -163,9 +171,9 @@ declare class cumulio {
   /**
    * Do a data query.
    *
-   * filter       Query, object consisting of dimensions & measures
+   * @param filter Query, object consisting of dimensions & measures
    *
-   * Returns a promise that either:
+   * @returns a promise that either:
    * - In case of unsynchronized querying, resolves with the results of a query and rejects in case of error.
    *   on the server and rejects in case of error.
    */
@@ -174,21 +182,21 @@ declare class cumulio {
   /**
    * Update properties of an entity.
    *
-   * resource         The type of resource to create. Eg. Resource.User.
-   * id               UUID, the unique identifier of the resource to update.
-   * properties       Object, properties to modify.
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param id UUID, the unique identifier of the resource to update.
+   * @param properties Object, properties to modify.
    *
-   * Returns a promise resolving with the updated resource, rejecting in case of error.
+   * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
   update(resource: cumulio.Resource, id: UUID, properties: any): Promise<any>;
 
   /**
    * Validate data.
    *
-   * resource         The type of resource to create. Eg. Resource.User.
-   * properties       Object with attributes to validate.
+   * @param resource The type of resource to create. Eg. Resource.User.
+   * @param properties Object with attributes to validate.
    *
-   * Returns a promise resolving with the boolean validation result, rejecting in case of error.
+   * @returns a promise resolving with the boolean validation result, rejecting in case of error.
    */
   validate(resource: cumulio.Resource, properties: any): Promise<any>;
 
