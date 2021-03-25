@@ -12,7 +12,7 @@ declare namespace cumulio {
    * @attr port (Optional)
    */
   export interface Options {
-    api_key: string;
+    api_key: UUID;
     api_token: string;
     app?: string;
     host?: string;
@@ -33,7 +33,63 @@ declare namespace cumulio {
     | "country"
     | "share"
     | "tag"
-    | "theme";
+    | "theme"
+    | "integration";
+
+  export type Role =
+    | "Accounts"
+    | "Aggregations"
+    | "AppLocale"
+    | "Assets"
+    | "Authorizations"
+    | "ChargeLines"
+    | "Columns"
+    | "Currencies"
+    | "Countries"
+    | "Dashboards"
+    | "DefaultAppLocale"
+    | "DefaultLocale"
+    | "DefaultTheme"
+    | "Fragments"
+    | "Features"
+    | "Groups"
+    | "Grouproles"
+    | "Hierarchylevels"
+    | "Integrations"
+    | "Joins"
+    | "KBArticles"
+    | "KBCategories"
+    | "KBChapters"
+    | "KBCourses"
+    | "KBEvents"
+    | "KBTags"
+    | "Locales"
+    | "MailHistory"
+    | "Modifications"
+    | "Modifier"
+    | "Notifications"
+    | "Nps"
+    | "OrganizationBackground"
+    | "Owner"
+    | "Plans"
+    | "PlanHistory"
+    | "Plugins"
+    | "Schedules"
+    | "Securables"
+    | "SecurableVersions"
+    | "SharedUser"
+    | "Shares"
+    | "Tags"
+    | "Tasks"
+    | "Themes"
+    | "Thumbnails"
+    | "Tickets"
+    | "Timezones"
+    | "TwoFactorAuthentications"
+    | "User"
+    | "UserBackground"
+    | "Users"
+    | "Views";
 
   /**
    * Describes Association interface
@@ -41,7 +97,7 @@ declare namespace cumulio {
    * @attr id
    */
   export interface Association {
-    role: Resource;
+    role: Role;
     id: UUID;
   }
 
@@ -51,7 +107,7 @@ declare namespace cumulio {
    * @attr token
    */
   export interface Authorization {
-    id: string;
+    id: UUID;
     token: string;
   }
 
@@ -148,7 +204,7 @@ declare class cumulio {
    */
   dissociate(
     resource: cumulio.Resource,
-    id: string,
+    id: UUID,
     association: cumulio.Association
   ): Promise<any>;
 
@@ -166,7 +222,7 @@ declare class cumulio {
   /**
    * iframe integration
    */
-  iframe(dashboardId: string, authorization: cumulio.Authorization): any;
+  iframe(dashboardId: UUID, authorization: cumulio.Authorization): any;
 
   /**
    * Do a data query.
