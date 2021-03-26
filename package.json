@@ -9,10 +9,21 @@
     "type": "git",
     "url": "https://github.com/cumulio/cumul.io-sdk-nodejs"
   },
-  "main": "cumulio",
+  "scripts": {
+    "type-lint": "tsc",
+    "type-lint-watch": "tsc -w"
+  },
+  "main": "./src/cumulio.js",
+  "types": "./types/cumulio.d.ts",
   "dependencies": {
+    "@types/node": "^14.14.32",
     "bluebird": "3.5.2",
+    "dts-gen": "^0.6.0",
     "request": "2.88.0",
     "request-promise": "4.2.2"
+  },
+  "devDependencies": {
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
   }
 }
