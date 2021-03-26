@@ -25,6 +25,7 @@ declare namespace cumulio {
     | "group"
     | "securable"
     | "column"
+    | "hierarchy"
     | "hierarchylevel"
     | "account"
     | "plugin"
@@ -34,7 +35,10 @@ declare namespace cumulio {
     | "share"
     | "tag"
     | "theme"
-    | "integration";
+    | "integration"
+    | "data"
+    | "dataprovider"
+    | "export";
 
   export type Role =
     | "Accounts"
