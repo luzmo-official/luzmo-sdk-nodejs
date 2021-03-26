@@ -43,7 +43,7 @@ See `example-embedding.js` for an example of how to use the API to securely embe
 
 ## TS Types
 
-The types are defined in `types/cumulio.d.ts` and will be expanded as properties are added. However, right now (at time of writing: 25/03/2021) the IDE will prompt the user as to what type to use, but some such as `properties` are still `any` so you should check the documentation to see what to include based on the `resource` you are using. We will add properties to the project slowly.
+The types are defined in `types/cumulio.d.ts` and will be expanded as properties are added. However, right now (at time of writing: 25/03/2021) the IDE will prompt the user as to what type to use, but some such as `properties` are still `any` so you should check the documentation to see what to include based on the `resource` you are using. We will continue to add properties to the project.
 
 ## Documentation
 
