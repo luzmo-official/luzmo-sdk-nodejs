@@ -4,6 +4,7 @@ const options: Cumulio.Options = {
   api_key: "< Your API key >",
   api_token: "< Your API token >",
 };
+
 const client = new Cumulio(options);
 client
   .create("securable", {
