@@ -124,7 +124,7 @@ declare class cumulio {
    * @example Contents of Options
    *
    * {
-   *    api_key        String (Required), your personal API key
+   *    api_key        UUID (Required), your personal API key
    *    api_token      String (Required), your secret API token
    *    api_version    String (Optional), semantic versioned API version to use (default: 0.1.0)
    *    host           String (Optional), host of the API (default: https://api.cumul.io)
