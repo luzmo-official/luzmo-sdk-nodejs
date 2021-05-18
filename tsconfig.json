@@ -1,25 +1,25 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "allowJs": true,
-        "checkJs": true,
-        "noEmit": true,
-        "noImplicitAny": false,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "./dist",
-        "rootDirs": ["src", "types", "examples"],
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*",
-                "types/*"
-            ]
-        }
-    },
-    "include": [
-        "./src/**/*", "examples/example_ts.ts", "./src/types/*"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDirs": ["src", "types", "examples"],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "types/*"
+      ]
+    }
+  },
+  "include": [
+      "./src/**/*", "examples/example_ts.ts", "./src/types/*"
+  ]
 }

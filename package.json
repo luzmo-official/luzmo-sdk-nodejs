@@ -3,7 +3,7 @@
   "description": "Connect to the Cumul.io API",
   "author": "Cumul.io Team <support@cumul.io>",
   "homepage": "https://cumul.io",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,14 +16,8 @@
   "main": "./src/cumulio.js",
   "types": "./types/cumulio.d.ts",
   "dependencies": {
-    "@types/node": "^14.14.32",
-    "bluebird": "3.5.2",
-    "dts-gen": "^0.6.0",
+    "bluebird": "3.7.2",
     "request": "2.88.0",
-    "request-promise": "4.2.2"
-  },
-  "devDependencies": {
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "request-promise": "4.2.6"
   }
 }
