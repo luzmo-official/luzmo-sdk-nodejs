@@ -268,7 +268,6 @@ Cumulio.prototype._emit = function (event, data) {
   data.key = t.api_key;
   data.token = t.api_token;
   data.version = t.api_version;
-  console.log("Emit method is " + Cumulio.HTTP_METHOD[data.action]);
 
   return requestp({
     uri: t.host + ":" + t.port + "/" + t.api_version + "/" + event,
