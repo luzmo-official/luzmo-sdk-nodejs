@@ -7,14 +7,12 @@ declare namespace cumulio {
    * Described the Options object
    * @attr api_key
    * @attr api_token
-   * @attr app (Optional)
    * @attr host (Optional)
    * @attr port (Optional)
    */
   export interface Options {
     api_key: UUID;
     api_token: string;
-    app?: string;
     host?: string;
     port?: string;
   }
@@ -209,11 +207,6 @@ declare class cumulio {
   get(resource: cumulio.Resource, filter: any): Promise<any>;
 
   /**
-   * iframe integration
-   */
-  iframe(dashboardId: UUID, authorization: cumulio.Authorization): any;
-
-  /**
    * Do a data query.
    *
    * @param filter Query, object consisting of dimensions & measures
@@ -246,8 +239,6 @@ declare class cumulio {
   validate(resource: cumulio.Resource, properties: any): Promise<any>;
 
   static API_VERSION: string;
-
-  static APP: string;
 
   static HOST: string;
 

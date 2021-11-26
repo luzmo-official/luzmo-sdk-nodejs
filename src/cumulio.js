@@ -32,7 +32,6 @@ function Cumulio(options) {
       "You must provide a valid API token. Contact the Cumul.io-team if in doubt!"
     );
 
-  t.app = t._isEmpty(options.app) ? Cumulio.APP : options.app;
   t.host = t._isEmpty(options.host) ? Cumulio.HOST : options.host;
   t.port = t._isEmpty(options.port) ? Cumulio.PORT : options.port;
   t.api_version = t._isEmpty(options.api_version)
@@ -42,7 +41,6 @@ function Cumulio(options) {
   t.api_token = options.api_token;
 }
 
-Cumulio.APP = "https://app.cumul.io";
 Cumulio.HOST = "https://api.cumul.io";
 Cumulio.PORT = "443";
 Cumulio.API_VERSION = "0.1.0";
@@ -213,24 +211,6 @@ Cumulio.prototype.query = function (filter) {
  */
 Cumulio.prototype.close = function () {
   var t = this;
-};
-
-/* Embedding */
-
-/**
- * iframe integration
- */
-Cumulio.prototype.iframe = function (dashboardId, authorization) {
-  var t = this;
-  return (
-    t.app +
-    "/s/" +
-    dashboardId +
-    "?key=" +
-    authorization.id +
-    "&token=" +
-    authorization.token
-  );
 };
 
 /* Helpers */
