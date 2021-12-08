@@ -17,7 +17,7 @@ var Cumulio = require('cumulio');
 var client = new Cumulio({
   api_key: '< your API key >',
   api_token: '< your API token >',
-  host: '< https://api.cumul.io or https://api.us.cumul.io/ or your VPC-specific address>'
+  host: '< https://api.cumul.io or https://api.us.cumul.io or your VPC-specific address>'
 });
 
 client.create(
