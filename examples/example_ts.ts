@@ -1,11 +1,11 @@
-import Cumulio from "../src/cumulio";
+import Luzmo from "./luzmo";
 
-const options: Cumulio.Options = {
+const options: Luzmo.Options = {
   api_key: "< Your API key >",
   api_token: "< Your API token >",
 };
 
-const client = new Cumulio(options);
+const client = new Luzmo(options);
 client
   .create("securable", {
     type: "dataset",

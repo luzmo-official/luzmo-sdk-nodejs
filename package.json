@@ -1,20 +1,20 @@
 {
-  "name": "cumulio",
-  "description": "Connect to the Cumul.io API",
-  "author": "Cumul.io Team <support@cumul.io>",
-  "homepage": "https://cumul.io",
+  "name": "luzmo",
+  "description": "Connect to the Luzmo API",
+  "author": "Luzmo Team <support@luzmo.com>",
+  "homepage": "https://luzmo.com",
   "version": "1.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cumulio/cumul.io-sdk-nodejs"
+    "url": "https://github.com/luzmo/luzmo-sdk-nodejs"
   },
   "scripts": {
     "type-lint": "tsc",
     "type-lint-watch": "tsc -w"
   },
-  "main": "./src/cumulio.js",
-  "types": "./types/cumulio.d.ts",
+  "main": "./src/luzmo.js",
+  "types": "./types/luzmo.d.ts",
   "dependencies": {
     "bluebird": "3.7.2",
     "request": "2.88.0",

@@ -1,8 +1,8 @@
-export default cumulio;
+export default luzmo;
 
 type UUID = string;
 
-declare namespace cumulio {
+declare namespace luzmo {
   /**
    * Described the Options object
    * @attr api_key
@@ -115,22 +115,22 @@ declare namespace cumulio {
   }
 }
 
-declare class cumulio {
+declare class luzmo {
   /**
    * Create a new API client instance.
-   * @param options Cumulio.Options interface, options to set
+   * @param options Luzmo.Options interface, options to set
    * @example Contents of Options
    *
    * {
    *    api_key        UUID (Required), your personal API key
    *    api_token      String (Required), your secret API token
    *    api_version    String (Optional), semantic versioned API version to use (default: 0.1.0)
-   *    host           String (Optional), host of the API (default: https://api.cumul.io)
+   *    host           String (Optional), host of the API (default: https://api.luzmo.com)
    *    port           String (Optional), port of the API (default: 443)
    *}
    *
    */
-  constructor(options: cumulio.Options);
+  constructor(options: luzmo.Options);
 
   /**
    * Associate two entities.
@@ -142,9 +142,9 @@ declare class cumulio {
    * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
   associate(
-    resource: cumulio.Resource,
+    resource: luzmo.Resource,
     id: UUID,
-    association: cumulio.Association,
+    association: luzmo.Association,
     properties: any
   ): Promise<any>;
 
@@ -163,9 +163,9 @@ declare class cumulio {
    * @returns a promise resolving in case of completion, rejecting in case of error.
    */
   create(
-    resource: cumulio.Resource,
+    resource: luzmo.Resource,
     properties: any,
-    associations?: cumulio.Association[]
+    associations?: luzmo.Association[]
   ): Promise<any>;
 
   /**
@@ -178,7 +178,7 @@ declare class cumulio {
    *
    * @returns a promise resolving in case of completion, rejecting in case of error.
    */
-  delete(resource: cumulio.Resource, id: UUID, properties: any): Promise<any>;
+  delete(resource: luzmo.Resource, id: UUID, properties: any): Promise<any>;
 
   /**
    * Dissociate two entities.
@@ -190,9 +190,9 @@ declare class cumulio {
    * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
   dissociate(
-    resource: cumulio.Resource,
+    resource: luzmo.Resource,
     id: UUID,
-    association: cumulio.Association
+    association: luzmo.Association
   ): Promise<any>;
 
   /**
@@ -204,7 +204,7 @@ declare class cumulio {
    *
    * @returns a promise resolving with the resources retrieved, rejecting in case of error.
    */
-  get(resource: cumulio.Resource, filter: any): Promise<any>;
+  get(resource: luzmo.Resource, filter: any): Promise<any>;
 
   /**
    * Do a data query.
@@ -215,7 +215,7 @@ declare class cumulio {
    * - In case of unsynchronized querying, resolves with the results of a query and rejects in case of error.
    *   on the server and rejects in case of error.
    */
-  query(filter: cumulio.Query): Promise<any>;
+  query(filter: luzmo.Query): Promise<any>;
 
   /**
    * Update properties of an entity.
@@ -226,7 +226,7 @@ declare class cumulio {
    *
    * @returns a promise resolving with the updated resource, rejecting in case of error.
    */
-  update(resource: cumulio.Resource, id: UUID, properties: any): Promise<any>;
+  update(resource: luzmo.Resource, id: UUID, properties: any): Promise<any>;
 
   /**
    * Validate data.
@@ -236,7 +236,7 @@ declare class cumulio {
    *
    * @returns a promise resolving with the boolean validation result, rejecting in case of error.
    */
-  validate(resource: cumulio.Resource, properties: any): Promise<any>;
+  validate(resource: luzmo.Resource, properties: any): Promise<any>;
 
   static API_VERSION: string;
 
