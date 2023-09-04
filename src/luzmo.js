@@ -41,7 +41,7 @@ function Luzmo(options) {
   t.api_token = options.api_token;
 }
 
-Luzmo.HOST = "https://api.cumul.io";
+Luzmo.HOST = "https://api.luzmo.com";
 Luzmo.PORT = "443";
 Luzmo.API_VERSION = "0.1.0";
 
