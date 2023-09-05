@@ -1,5 +1,5 @@
 {
-  "name": "luzmo",
+  "name": "@luzmo/nodejs-sdk",
   "description": "Connect to the Luzmo API",
   "author": "Luzmo Team <support@luzmo.com>",
   "homepage": "https://luzmo.com",
