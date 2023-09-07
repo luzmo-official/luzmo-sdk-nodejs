@@ -4,14 +4,14 @@ You can use this Node.js module to interact with the [Luzmo](https://luzmo.com) 
 
 ## Installation
 
-`npm install luzmo`
+`npm install @luzmo/nodejs-sdk`
 
 ## Usage
 
-Include the `luzmo` npm package in your project. For example, to push data into the platform (triggering real-time dashboard updates):
+Include the `@luzmo/nodejs-sdk` npm package in your project. For example, to push data into the platform (triggering real-time dashboard updates):
 
 ```
-var Luzmo = require('luzmo');
+var Luzmo = require('@luzmo/nodejs-sdk');
 
 // Connect
 var client = new Luzmo({
