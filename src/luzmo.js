@@ -1,8 +1,8 @@
 /**
- * Cumul.io API SDK
+ * Luzmo API SDK
  * API : REST, language : Node.js
  *
- * Need some help? Contact us at support@cumul.io
+ * Need some help? Contact us at support@luzmo.com
  */
 
 "use strict";
@@ -14,36 +14,36 @@
  *   api_key        String, your personal API key (required)
  *   api_token      String, your secret API token (required)
  *   api_version    String, semantic versioned API version to use (default: 0.1.0)
- *   host           String, host of the API (default: https://api.cumul.io)
+ *   host           String, host of the API (default: https://api.luzmo.com)
  *   port           String, port of the API (default: 443)
  */
-function Cumulio(options) {
+function Luzmo(options) {
   var t = this;
   if (t._isEmpty(options))
     throw new Error(
-      "You must provide a valid API key and token. Contact the Cumul.io-team if in doubt!"
+      "You must provide a valid API key and token. Contact the Luzmo-team if in doubt!"
     );
   if (t._isEmpty(options.api_key) || !t._isString(options.api_key))
     throw new Error(
-      "You must provide a valid API key. Contact the Cumul.io-team if in doubt!"
+      "You must provide a valid API key. Contact the Luzmo-team if in doubt!"
     );
   if (t._isEmpty(options.api_token) || !t._isString(options.api_token))
     throw new Error(
-      "You must provide a valid API token. Contact the Cumul.io-team if in doubt!"
+      "You must provide a valid API token. Contact the Luzmo-team if in doubt!"
     );
 
-  t.host = t._isEmpty(options.host) ? Cumulio.HOST : options.host;
-  t.port = t._isEmpty(options.port) ? Cumulio.PORT : options.port;
+  t.host = t._isEmpty(options.host) ? Luzmo.HOST : options.host;
+  t.port = t._isEmpty(options.port) ? Luzmo.PORT : options.port;
   t.api_version = t._isEmpty(options.api_version)
-    ? Cumulio.API_VERSION
+    ? Luzmo.API_VERSION
     : options.api_version;
   t.api_key = options.api_key;
   t.api_token = options.api_token;
 }
 
-Cumulio.HOST = "https://api.cumul.io";
-Cumulio.PORT = "443";
-Cumulio.API_VERSION = "0.1.0";
+Luzmo.HOST = "https://api.luzmo.com";
+Luzmo.PORT = "443";
+Luzmo.API_VERSION = "0.1.0";
 
 /**
  * Create a new entity.
@@ -55,7 +55,7 @@ Cumulio.API_VERSION = "0.1.0";
  *
  * Returns a promise resolving in case of completion, rejecting in case of error.
  */
-Cumulio.prototype.create = function (resource, properties, associations) {
+Luzmo.prototype.create = function (resource, properties, associations) {
   var t = this;
   return t
     ._emit(resource, {
@@ -84,7 +84,7 @@ Cumulio.prototype.create = function (resource, properties, associations) {
  *
  * Returns a promise resolving with the resources retrieved, rejecting in case of error.
  */
-Cumulio.prototype.get = function (resource, filter) {
+Luzmo.prototype.get = function (resource, filter) {
   var t = this;
   var query = {
     action: "get",
@@ -103,7 +103,7 @@ Cumulio.prototype.get = function (resource, filter) {
  *
  * Returns a promise resolving in case of completion, rejecting in case of error.
  */
-Cumulio.prototype.delete = function (resource, id, properties) {
+Luzmo.prototype.delete = function (resource, id, properties) {
   var t = this;
   return t._emit(resource, {
     action: "delete",
@@ -121,7 +121,7 @@ Cumulio.prototype.delete = function (resource, id, properties) {
  *
  * Returns a promise resolving with the updated resource, rejecting in case of error.
  */
-Cumulio.prototype.update = function (resource, id, properties) {
+Luzmo.prototype.update = function (resource, id, properties) {
   var t = this;
   return t._emit(resource, {
     action: "update",
@@ -142,7 +142,7 @@ Cumulio.prototype.update = function (resource, id, properties) {
  *
  * Returns a promise resolving with the updated resource, rejecting in case of error.
  */
-Cumulio.prototype.associate = function (resource, id, association, properties) {
+Luzmo.prototype.associate = function (resource, id, association, properties) {
   var t = this;
   return t._emit(resource, {
     action: "associate",
@@ -163,7 +163,7 @@ Cumulio.prototype.associate = function (resource, id, association, properties) {
  *
  * Returns a promise resolving with the updated resource, rejecting in case of error.
  */
-Cumulio.prototype.dissociate = function (resource, id, association) {
+Luzmo.prototype.dissociate = function (resource, id, association) {
   var t = this;
   return t._emit(resource, {
     action: "dissociate",
@@ -180,7 +180,7 @@ Cumulio.prototype.dissociate = function (resource, id, association) {
  *
  * Returns a promise resolving with the boolean validation result, rejecting in case of error.
  */
-Cumulio.prototype.validate = function (resource, properties) {
+Luzmo.prototype.validate = function (resource, properties) {
   var t = this;
   return t._emit(resource, {
     action: "validate",
@@ -198,7 +198,7 @@ Cumulio.prototype.validate = function (resource, properties) {
  * - In case of unsynchronized querying, resolves with the results of a query and rejects in case of error.
  *   on the server and rejects in case of error.
  */
-Cumulio.prototype.query = function (filter) {
+Luzmo.prototype.query = function (filter) {
   var t = this;
   return t._emit("data", {
     action: "get",
@@ -209,7 +209,7 @@ Cumulio.prototype.query = function (filter) {
 /**
  * Close the connection to the API.
  */
-Cumulio.prototype.close = function () {
+Luzmo.prototype.close = function () {
   var t = this;
 };
 
@@ -218,18 +218,18 @@ Cumulio.prototype.close = function () {
 /**
  * Set up connection -- no persistent connection needed
  */
-Cumulio.prototype._connect = function () {
+Luzmo.prototype._connect = function () {
   var t = this;
 };
 
 /**
  * Buffer connections
  */
-Cumulio.prototype._onConnect = function () {
+Luzmo.prototype._onConnect = function () {
   var t = this;
 };
 
-Cumulio.HTTP_METHOD = {
+Luzmo.HTTP_METHOD = {
   get: "SEARCH",
   create: "POST",
   update: "PATCH",
@@ -242,7 +242,7 @@ Cumulio.HTTP_METHOD = {
 /**
  * Push out message over socket
  */
-Cumulio.prototype._emit = function (event, data) {
+Luzmo.prototype._emit = function (event, data) {
   var t = this;
 
   data.key = t.api_key;
@@ -254,7 +254,7 @@ Cumulio.prototype._emit = function (event, data) {
     json: true,
     body: data,
     encoding: null,
-    method: Cumulio.HTTP_METHOD[data.action],
+    method: Luzmo.HTTP_METHOD[data.action],
   })
     .then((body) => {
       return body;
@@ -269,51 +269,51 @@ Cumulio.prototype._emit = function (event, data) {
  * Type checks
  */
 
-Cumulio.prototype._isInt = function (value) {
+Luzmo.prototype._isInt = function (value) {
   return !isNaN(value) && parseInt(Number(value).toString(), 10) === value;
 };
 
-Cumulio.prototype._isNumeric = function (value) {
+Luzmo.prototype._isNumeric = function (value) {
   return !isNaN(value) && isFinite(value);
 };
 
-Cumulio.prototype._isEmpty = function (value) {
+Luzmo.prototype._isEmpty = function (value) {
   return value === null || typeof value === "undefined";
 };
 
-Cumulio.prototype._isObject = function (value) {
+Luzmo.prototype._isObject = function (value) {
   return (
     !(value === null) && typeof value === "object" && !Array.isArray(value)
   );
 };
 
-Cumulio.prototype._isArray = function (value) {
+Luzmo.prototype._isArray = function (value) {
   return Array.isArray(value);
 };
 
-Cumulio.prototype._isFunction = function (value) {
+Luzmo.prototype._isFunction = function (value) {
   return value && {}.toString.call(value) === "[object Function]";
 };
 
-Cumulio.prototype._isString = function (value) {
+Luzmo.prototype._isString = function (value) {
   return typeof value === "string" || value instanceof String;
 };
 
-Cumulio.prototype._isBoolean = function (value) {
+Luzmo.prototype._isBoolean = function (value) {
   return value === true || value === false;
 };
 
 /**
  * Decompress a received payload.
  */
-Cumulio.prototype._decompress = function (payload) {
+Luzmo.prototype._decompress = function (payload) {
   return payload;
 };
 
 /**
  * Compress a payload before sending.
  */
-Cumulio.prototype._compress = function (payload) {
+Luzmo.prototype._compress = function (payload) {
   return payload;
 };
 
@@ -322,4 +322,4 @@ var Promise = require("bluebird");
 var requestp = require("request-promise");
 var request = require("request");
 
-module.exports = Cumulio;
+module.exports = Luzmo;

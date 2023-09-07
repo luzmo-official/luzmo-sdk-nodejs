@@ -1,7 +1,7 @@
-var Cumulio = require("../src/cumulio");
+var Luzmo = require("../src/luzmo");
 
 // Connect
-var client = new Cumulio({
+var client = new Luzmo({
   api_key: "< Your API key >",
   api_token: "< Your API token >",
 });

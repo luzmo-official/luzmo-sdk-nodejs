@@ -1,13 +1,13 @@
 // This code should be executed server-side. Your API key and token should be kept confidential.
 
-var Cumulio = require('./src/cumulio');
+var Luzmo = require('./src/luzmo');
 var https = require('http');
 
-// Connect to Cumul.io API
-var client = new Cumulio({
+// Connect to Luzmo API
+var client = new Luzmo({
   api_key: '< Your API key >',
   api_token: '< Your API token >'
-}); // Set third, optional property host to https://api.cumul.io/ (default, EU multitenant env), https://api.us.cumul.io (US multitenant env) or your specific VPC address
+}); // Set third, optional property host to https://api.luzmo.com/ (default, EU multitenant env), https://api.us.luzmo.com (US multitenant env) or your specific VPC address
 
 // Run a web server
 var server = https.createServer(function(request, response) {
@@ -42,22 +42,22 @@ var server = https.createServer(function(request, response) {
         <html>
           <head>
             <meta charset="UTF-8">
-            <title>Cumul.io embedding example</title>
+            <title>Luzmo embedding example</title>
           </head>
           <body style="font-family: sans-serif;">
             <div style="margin-left: 28px">
-              <h1 style="font-weight: 200;">Cumul.io embedding example</h1>
-              <p>This page contains an example of an embedded dashboard of Cumul.io. The dashboard data is securely filtered server-side, so clients can only access data to which your application explicitly grants access (in this case, the data of client_id = 1234).</p>
+              <h1 style="font-weight: 200;">Luzmo embedding example</h1>
+              <p>This page contains an example of an embedded dashboard of Luzmo. The dashboard data is securely filtered server-side, so clients can only access data to which your application explicitly grants access (in this case, the data of client_id = 1234).</p>
               <p>Try to resize your page to see the dashboard adapting to different screen modes.</p>
             </div>
-            <cumulio-dashboard
-                appServer="https://app.cumul.io/"> 
-                <!-- Set appServer to https://app.cumul.io/ (default, EU multitenant env), https://app.us.cumul.io (US multitenant env) or your specific VPC address -->
-            </cumulio-dashboard>
+            <luzmo-dashboard
+                appServer="https://app.luzmo.com/"> 
+                <!-- Set appServer to https://app.luzmo.com/ (default, EU multitenant env), https://app.us.luzmo.com (US multitenant env) or your specific VPC address -->
+            </luzmo-dashboard>
             <!-- Check out the latest version on our npm page, as well as our components for frameworks such as react, vue and angular -->
-            <script src="https://cdn-a.cumul.io/js/cumulio-dashboard/1.0.7/cumulio-dashboard.min.js" charset="utf-8"></script>
+            <script src="https://cdn.luzmo.com/js/luzmo-embed/5.0.0/luzmo-embed.min.js" charset="utf-8"></script>
             <script type="text/javascript">
-              const dashboardElement = document.querySelector('cumulio-dashboard');
+              const dashboardElement = document.querySelector('luzmo-dashboard');
               // We can now set the key and token to the dashboard component.
               dashboardElement.authKey = '${authorization.id}'
               dashboardElement.authToken =  '${authorization.token}'

@@ -1,23 +1,23 @@
-# Cumul.io API
+# Luzmo API
 
-You can use this Node.js module to interact with the [Cumul.io](https://cumul.io) API in order to create, modify or delete datasets, dashboards or push new data into the platform in a programmatic way.
+You can use this Node.js module to interact with the [Luzmo](https://luzmo.com) API in order to create, modify or delete datasets, dashboards or push new data into the platform in a programmatic way.
 
 ## Installation
 
-`npm install cumulio`
+`npm install luzmo`
 
 ## Usage
 
-Include the `cumulio` npm package in your project. For example, to push data into the platform (triggering real-time dashboard updates):
+Include the `luzmo` npm package in your project. For example, to push data into the platform (triggering real-time dashboard updates):
 
 ```
-var Cumulio = require('cumulio');
+var Luzmo = require('luzmo');
 
 // Connect
-var client = new Cumulio({
+var client = new Luzmo({
   api_key: '< your API key >',
   api_token: '< your API token >',
-  host: '< https://api.cumul.io or https://api.us.cumul.io or your VPC-specific address>'
+  host: '< https://api.luzmo.com or https://api.us.luzmo.com or your VPC-specific address>'
 });
 
 client.create(
@@ -44,8 +44,8 @@ See `example-embedding.js` for an example of how to use the API to securely embe
 
 ## TS Types
 
-The types are defined in `types/cumulio.d.ts` and will be expanded as properties are added. However, right now (at time of writing: 25/03/2021) the IDE will prompt the user as to what type to use, but some such as `properties` are still `any` so you should check the documentation to see what to include based on the `resource` you are using. We will continue to add properties to the project.
+The types are defined in `types/luzmo.d.ts` and will be expanded as properties are added. However, right now (at time of writing: 25/03/2021) the IDE will prompt the user as to what type to use, but some such as `properties` are still `any` so you should check the documentation to see what to include based on the `resource` you are using. We will continue to add properties to the project.
 
 ## Documentation
 
-The API documentation (available services and methods) can be found [here](http://developer.cumul.io).
+The API documentation (available services and methods) can be found [here](http://developer.luzmo.com).
