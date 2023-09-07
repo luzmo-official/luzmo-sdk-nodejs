@@ -1,13 +1,13 @@
 {
   "name": "@luzmo/nodejs-sdk",
   "description": "Connect to the Luzmo API",
-  "author": "Luzmo Team <support@luzmo.com>",
+  "author": "Luzmo Team <engineering@luzmo.com>",
   "homepage": "https://luzmo.com",
   "version": "1.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/luzmo/luzmo-sdk-nodejs"
+    "url": "https://github.com/luzmo-official/luzmo-sdk-nodejs"
   },
   "scripts": {
     "type-lint": "tsc",
