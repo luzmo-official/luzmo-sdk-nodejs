@@ -16,8 +16,6 @@
   "main": "./src/luzmo.js",
   "types": "./types/luzmo.d.ts",
   "dependencies": {
-    "bluebird": "3.7.2",
-    "request": "2.88.0",
-    "request-promise": "4.2.6"
+    "axios": "^1.5.1"
   }
 }

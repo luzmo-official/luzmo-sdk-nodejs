@@ -11,10 +11,10 @@ You can use this Node.js module to interact with the [Luzmo](https://luzmo.com) 
 Include the `@luzmo/nodejs-sdk` npm package in your project. For example, to push data into the platform (triggering real-time dashboard updates):
 
 ```
-var Luzmo = require('@luzmo/nodejs-sdk');
+const Luzmo = require('@luzmo/nodejs-sdk');
 
 // Connect
-var client = new Luzmo({
+const client = new Luzmo({
   api_key: '< your API key >',
   api_token: '< your API token >',
   host: '< https://api.luzmo.com or https://api.us.luzmo.com or your VPC-specific address>'

@@ -1,24 +1,25 @@
 // This code should be executed server-side. Your API key and token should be kept confidential.
 
-var Luzmo = require('./src/luzmo');
-var https = require('http');
+const Luzmo = require('./src/luzmo');
+const https = require('http');
 
 // Connect to Luzmo API
-var client = new Luzmo({
+const client = new Luzmo({
   api_key: '< Your API key >',
   api_token: '< Your API token >'
 }); // Set third, optional property host to https://api.luzmo.com/ (default, EU multitenant env), https://api.us.luzmo.com (US multitenant env) or your specific VPC address
 
 // Run a web server
-var server = https.createServer(function(request, response) {
+const server = https.createServer(function(request, response) {
 
   if (request.url !== '/') {
     response.statusCode = 404;
     return response.end('Not Found');
   }
 
+  const integrationId = 'b9a0c66e-2986-4b0f-913f-af54d9132453'; // Set to your own integration ID
+
   // Create a sso token
-  var integrationId = 'b9a0c66e-2986-4b0f-913f-af54d9132453'; // Set to your own integration ID
   client.create('authorization', {
     type: 'sso',
     integration_id: integrationId,
@@ -51,7 +52,7 @@ var server = https.createServer(function(request, response) {
               <p>Try to resize your page to see the dashboard adapting to different screen modes.</p>
             </div>
             <luzmo-dashboard
-                appServer="https://app.luzmo.com/"> 
+                appServer="https://app.luzmo.com/">
                 <!-- Set appServer to https://app.luzmo.com/ (default, EU multitenant env), https://app.us.luzmo.com (US multitenant env) or your specific VPC address -->
             </luzmo-dashboard>
             <!-- Check out the latest version on our npm page, as well as our components for frameworks such as react, vue and angular -->
