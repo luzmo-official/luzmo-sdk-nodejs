@@ -4,7 +4,7 @@
  *
  * Need some help? Contact us at support@luzmo.com
  */
- // const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 const axios = require('axios');
 
 "use strict";
