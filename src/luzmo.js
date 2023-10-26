@@ -263,8 +263,9 @@ _onConnect() {
       return response.data;
     })
     .catch((error) => {
-      if (!Luzmo._isEmpty(error.response.error)) throw error.response.error;
-      throw error.response;
+      if (!Luzmo._isEmpty(error.response)) throw error.response.data;
+      else if (!Luzmo._isEmpty(error.request)) throw error.request;
+      else throw "An unexpected error occured.";
     });
   };
 
