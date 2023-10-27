@@ -263,8 +263,10 @@ _onConnect() {
       return response.data;
     })
     .catch((error) => {
-      if (!Luzmo._isEmpty(error.response.error)) throw error.response.error;
-      throw error.response;
+      if (!Luzmo._isEmpty(error.response)) throw error.response.data;
+      delete error.request;
+      delete error.config;
+      throw error;
     });
   };
 
