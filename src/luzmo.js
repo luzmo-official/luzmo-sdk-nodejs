@@ -264,8 +264,9 @@ _onConnect() {
     })
     .catch((error) => {
       if (!Luzmo._isEmpty(error.response)) throw error.response.data;
-      else if (!Luzmo._isEmpty(error.request)) throw error.request;
-      else throw "An unexpected error occured.";
+      delete error.request;
+      delete error.config;
+      throw error;
     });
   };
 
