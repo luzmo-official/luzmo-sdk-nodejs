@@ -1,6 +1,6 @@
 var Luzmo = require("../src/luzmo");
 
-// Connect
+// Open connection
 var client = new Luzmo({
   api_key: "< Your API key >",
   api_token: "< Your API token >",
