@@ -20,6 +20,6 @@
     }
   },
   "include": [
-      "./src/**/*", "examples/example_ts.ts", "./src/types/*"
+      "./src/**/*{.ts}", "examples/example_ts.ts", "./src/types/*{.d.ts,.ts}"
   ]
 }
