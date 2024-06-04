@@ -1,4 +1,4 @@
-export default luzmo;
+export = luzmo;
 
 type UUID = string;
 
