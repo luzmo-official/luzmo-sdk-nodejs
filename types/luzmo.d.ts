@@ -36,6 +36,8 @@ declare namespace luzmo {
     | "integration"
     | "data"
     | "dataprovider"
+    | "collection"
+    | "aichart"
     | "export";
 
   export type Role =
