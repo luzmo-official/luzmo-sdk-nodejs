@@ -16,9 +16,9 @@
   "main": "./src/luzmo.js",
   "types": "./types/luzmo.d.ts",
   "dependencies": {
-    "axios": "^1.7.2"
+    "axios": "^1.7.4"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   }
 }
