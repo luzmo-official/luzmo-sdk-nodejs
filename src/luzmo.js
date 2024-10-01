@@ -252,14 +252,19 @@ _onConnect() {
     data.token = t.api_token;
     data.version = t.api_version;
 
-
-    return axios({
+    const requestSettings = {
       method: HTTP_METHOD[data.action],
       url: `${t.host}:${t.port}/${t.api_version}/${event}`,
       data: JSON.stringify(data),
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then((response) =>  {
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    if (event === "export" && data.action === "create") {
+      requestSettings.responseType = "arraybuffer";
+    }
+
+    return axios(requestSettings)
+    .then((response) => {
       return response.data;
     })
     .catch((error) => {
