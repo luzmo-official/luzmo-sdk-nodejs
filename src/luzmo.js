@@ -277,7 +277,12 @@ _onConnect() {
             !Luzmo._isEmpty(error.response.headers["content-type"]) &&
             error.response.headers["content-type"].includes("application/json");
           if (isJSON) {
-            throw JSON.parse(error.response.data.toString());
+            try {
+              return JSON.parse(response.data.toString());
+            } catch (e) {
+              // not json return the response as is
+              return response.data;
+            }
           }
           throw error.response.data;
         }
