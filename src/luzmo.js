@@ -252,23 +252,37 @@ _onConnect() {
     data.token = t.api_token;
     data.version = t.api_version;
 
-
-    return axios({
+    const requestSettings = {
       method: HTTP_METHOD[data.action],
       url: `${t.host}:${t.port}/${t.api_version}/${event}`,
       data: JSON.stringify(data),
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then((response) =>  {
-      return response.data;
-    })
-    .catch((error) => {
-      if (!Luzmo._isEmpty(error.response)) throw error.response.data;
-      delete error.request;
-      delete error.config;
-      throw error;
-    });
-  };
+      headers: { "Content-Type": "application/json" },
+      responseType: "arraybuffer",
+    };
+    return axios(requestSettings)
+      .then((response) => {
+        if (
+          response.headers?.["content-type"]?.includes?.("application/json")
+        ) {
+          return JSON.parse(response.data.toString());
+        }
+        return response.data;
+      })
+      .catch((error) => {
+        if (!Luzmo._isEmpty(error.response)) {
+          if (
+            error.response?.headers["content-type"]?.includes(
+              "application/json",
+            )
+            throw JSON.parse(error.response.data.toString());
+          }
+          throw error.response.data;
+        }
+        delete error.request;
+        delete error.config;
+        throw error;
+      });
+  }
 
   /**
    * Type checks
