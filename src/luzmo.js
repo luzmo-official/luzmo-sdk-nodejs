@@ -273,8 +273,8 @@ _onConnect() {
       .catch((error) => {
         if (!Luzmo._isEmpty(error.response)) {
           const isJSON =
-            !_isEmpty(error.response.headers) &&
-            !_isEmpty(error.response.headers["content-type"]) &&
+            !Luzmo._isEmpty(error.response.headers) &&
+            !Luzmo._isEmpty(error.response.headers["content-type"]) &&
             error.response.headers["content-type"].includes("application/json");
           if (isJSON) {
             throw JSON.parse(error.response.data.toString());
