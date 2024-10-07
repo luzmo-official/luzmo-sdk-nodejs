@@ -266,7 +266,12 @@ _onConnect() {
           !Luzmo._isEmpty(response.headers["content-type"]) &&
           response.headers["content-type"].includes("application/json");
         if (isJSON) {
-          return JSON.parse(response.data.toString());
+          try {
+            return JSON.parse(response.data.toString());
+          } catch (e) {
+            // not json return the response as is
+            return response.data;
+          }
         }
         return response.data;
       })
@@ -277,12 +282,14 @@ _onConnect() {
             !Luzmo._isEmpty(error.response.headers["content-type"]) &&
             error.response.headers["content-type"].includes("application/json");
           if (isJSON) {
+            let errorParsed;
             try {
-              return JSON.parse(response.data.toString());
+              errorParsed = JSON.parse(error.response.data.toString());
             } catch (e) {
-              // not json return the response as is
-              return response.data;
+              throw error.response.data;
             }
+
+            throw errorParsed;
           }
           throw error.response.data;
         }
