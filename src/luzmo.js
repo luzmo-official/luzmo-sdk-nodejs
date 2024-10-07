@@ -261,19 +261,22 @@ _onConnect() {
     };
     return axios(requestSettings)
       .then((response) => {
-        if (
-          response.headers?.["content-type"]?.includes?.("application/json")
-        ) {
+        const isJSON =
+          !Luzmo._isEmpty(response.headers) &&
+          !Luzmo._isEmpty(response.headers["content-type"]) &&
+          response.headers["content-type"].includes("application/json");
+        if (isJSON) {
           return JSON.parse(response.data.toString());
         }
         return response.data;
       })
       .catch((error) => {
         if (!Luzmo._isEmpty(error.response)) {
-          if (
-            error.response?.headers["content-type"]?.includes(
-              "application/json",
-            )
+          const isJSON =
+            !_isEmpty(error.response.headers) &&
+            !_isEmpty(error.response.headers["content-type"]) &&
+            error.response.headers["content-type"].includes("application/json");
+          if (isJSON) {
             throw JSON.parse(error.response.data.toString());
           }
           throw error.response.data;
