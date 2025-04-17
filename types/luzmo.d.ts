@@ -115,6 +115,10 @@ declare namespace luzmo {
     order?: any[];
     limit?: { by: number };
   }
+
+  export interface Queries {
+    queries: Query[];
+  }
 }
 
 declare class luzmo {
@@ -217,7 +221,7 @@ declare class luzmo {
    * - In case of unsynchronized querying, resolves with the results of a query and rejects in case of error.
    *   on the server and rejects in case of error.
    */
-  query(filter: luzmo.Query): Promise<any>;
+  query(filter: luzmo.Query | luzmo.Queries): Promise<any>;
 
   /**
    * Update properties of an entity.
