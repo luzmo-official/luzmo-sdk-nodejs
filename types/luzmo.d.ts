@@ -221,7 +221,7 @@ declare class luzmo {
    * - In case of unsynchronized querying, resolves with the results of a query and rejects in case of error.
    *   on the server and rejects in case of error.
    */
-  query(filter: luzmo.Query): Promise<any>;
+  query(filter: luzmo.Query | luzmo.Queries): Promise<any>;
 
   /**
    * Update properties of an entity.
