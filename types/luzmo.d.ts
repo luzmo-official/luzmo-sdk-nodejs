@@ -115,6 +115,10 @@ declare namespace luzmo {
     order?: any[];
     limit?: { by: number };
   }
+
+  export interface Queries {
+    queries: Query[];
+  }
 }
 
 declare class luzmo {
