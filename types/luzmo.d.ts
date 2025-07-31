@@ -109,8 +109,8 @@ declare namespace luzmo {
    * @attr limit (Optional)
    */
   export interface Query {
-    dimensions: any[];
-    measures: any[];
+    dimensions?: any[];
+    measures?: any[];
     where?: any[];
     order?: any[];
     limit?: { by: number };
