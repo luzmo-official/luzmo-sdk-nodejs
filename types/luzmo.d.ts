@@ -102,19 +102,20 @@ declare namespace luzmo {
 
   /**
    * Describes Query interface
-   * @attr dimensions
-   * @attr measures
+   * @attr dimensions - Required if measures is undefined
+   * @attr measures - Required if dimensions is undefined
    * @attr where (Optional)
    * @attr order (Optional)
    * @attr limit (Optional)
    */
-  export interface Query {
-    dimensions: any[];
-    measures: any[];
+  export type Query = {
     where?: any[];
     order?: any[];
     limit?: { by: number };
-  }
+  } & (
+    { dimensions: any[]; measures?: any[] } |
+    { dimensions?: any[]; measures: any[] }
+  );
 
   export interface Queries {
     queries: Query[];
