@@ -3,7 +3,7 @@
   "description": "Connect to the Luzmo API",
   "author": "Luzmo Team <engineering@luzmo.com>",
   "homepage": "https://luzmo.com",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,6 +17,6 @@
   "main": "./src/luzmo.js",
   "types": "./types/luzmo.d.ts",
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "6.0.2"
   }
 }
