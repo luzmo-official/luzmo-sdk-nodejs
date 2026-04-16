@@ -58,21 +58,11 @@ class Luzmo {
    * Returns a promise resolving in case of completion, rejecting in case of error.
    */
   async create(resource, properties, associations) {
-    const instance = await this._emit(resource, {
+    return this._emit(resource, {
       action: "create",
       properties: properties,
+      associations: associations,
     });
-
-    // Set associations on the newly created resource
-    if (Luzmo._isEmpty(associations) || associations.length === 0) {
-      return instance;
-    }
-
-    const promises = associations.map((association) => {
-      return this.associate(resource, instance.id, association);
-    });
-    await Promise.all(promises);
-    return instance;
   };
 
   /**

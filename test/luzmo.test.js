@@ -223,33 +223,25 @@ test("validate(resource, properties) sends validate payload", async () => {
   );
 });
 
-test("create with associations calls associate per item", async () => {
+test("create with associations sends associations in create payload", async () => {
   const associations = [
     { role: "group", id: "group-1" },
     { role: "group", id: "group-2" },
   ];
   await withApiServer(
-    async (_, callIndex) => {
-      if (callIndex === 0) {
-        return {
-          headers: { "content-type": "application/json" },
-          body: Buffer.from(JSON.stringify({ id: "new-user-id" })),
-        };
-      }
-      return { body: Buffer.from("ok") };
-    },
+    async () => ({
+      headers: { "content-type": "application/json" },
+      body: Buffer.from(JSON.stringify({ id: "new-user-id" })),
+    }),
     async ({ client, requests }) => {
       const created = await client.create("user", { name: "Ada" }, associations);
 
       assert.equal(created.id, "new-user-id");
-      assert.equal(requests.length, 3);
-
-      const assocBody1 = JSON.parse(requests[1].body.toString());
-      const assocBody2 = JSON.parse(requests[2].body.toString());
-      assert.equal(assocBody1.id, "new-user-id");
-      assert.equal(assocBody2.id, "new-user-id");
-      assert.deepEqual(assocBody1.resource, associations[0]);
-      assert.deepEqual(assocBody2.resource, associations[1]);
+      assert.equal(requests.length, 1);
+      const body = JSON.parse(requests[0].body.toString());
+      assert.equal(body.action, "create");
+      assert.deepEqual(body.properties, { name: "Ada" });
+      assert.deepEqual(body.associations, associations);
     },
   );
 });
@@ -527,6 +519,7 @@ if (!process.env.LUZMO_API_KEY || !process.env.LUZMO_API_TOKEN) {
   test("live API contract: get users", { skip: true }, () => {});
   test("live API contract: create and delete data dataset", { skip: true }, () => {});
   test("live API contract: associate and dissociate dataset with collection", { skip: true }, () => {});
+  test("live API contract: create column with immediate dataset association", { skip: true }, () => {});
   test("live API error contract: wrong host", { skip: true }, () => {});
   test("live API error contract: wrong API version", { skip: true }, () => {});
   test("live API error contract: non-existing service", { skip: true }, () => {});
@@ -622,6 +615,52 @@ if (!process.env.LUZMO_API_KEY || !process.env.LUZMO_API_TOKEN) {
 
       const dissociated = await client.dissociate("securable", datasetId, association);
       assertMutationResponseContract(dissociated);
+    } finally {
+      if (datasetId) {
+        const deletedDataset = await client.delete("securable", datasetId);
+        assertMutationResponseContract(deletedDataset);
+      }
+    }
+  });
+
+  test("live API contract: create column with immediate dataset association", async () => {
+    const client = createLiveClient();
+    const nonce = `sdk-column-assoc-${Date.now()}`;
+    let datasetId;
+
+    try {
+      const createDatasetResponse = await client.create("data", {
+        type: "create",
+        data: [["alpha", 1]],
+        options: {
+          update_metadata: true,
+          header: ["label", "value"],
+          name: { en: nonce },
+        },
+      });
+
+      assertListResponseContract(createDatasetResponse);
+      assert.ok(createDatasetResponse.rows.length > 0);
+      datasetId = createDatasetResponse.rows[0].id;
+      assert.equal(typeof datasetId, "string");
+      assert.ok(datasetId.length > 0);
+
+      const createColumnResponse = await client.create(
+        "column",
+        {
+          type: "hierarchy",
+          format: "",
+          informat: "hierarchy",
+          order: 0,
+          source_order: 0,
+          name: { en: `${nonce}-column` },
+        },
+        [{ role: "Securable", id: datasetId }],
+      );
+
+      assertObjectResponseContract(createColumnResponse);
+      assert.equal(typeof createColumnResponse.id, "string");
+      assert.ok(createColumnResponse.id.length > 0);
     } finally {
       if (datasetId) {
         const deletedDataset = await client.delete("securable", datasetId);
