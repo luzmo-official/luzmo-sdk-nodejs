@@ -7,9 +7,87 @@
 
 "use strict";
 
+const { TextDecoder } = require("util");
+
 const HOST = "https://api.luzmo.com",
       PORT = "443",
       API_VERSION = "0.1.0";
+
+class LuzmoStream {
+  constructor(options) {
+    this.headers = options.headers;
+    this.format = options.format;
+    this._body = options.body;
+    this._controller = options.controller;
+    this._consumed = false;
+  }
+
+  cancel() {
+    if (this._controller) {
+      this._controller.abort();
+    }
+    if (this._body && typeof this._body.cancel === "function") {
+      this._body.cancel().catch(() => {});
+    }
+  }
+
+  [Symbol.asyncIterator]() {
+    if (this._consumed) {
+      throw new Error("This stream has already been consumed.");
+    }
+    this._consumed = true;
+    return this._iterateText();
+  }
+
+  async *_iterateText() {
+    if (!this._body) {
+      return;
+    }
+
+    const decoder = new TextDecoder();
+
+    if (typeof this._body.getReader === "function") {
+      const reader = this._body.getReader();
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          if (!value) {
+            continue;
+          }
+          yield decoder.decode(value, { stream: true });
+        }
+        const trailingChunk = decoder.decode();
+        if (trailingChunk.length > 0) {
+          yield trailingChunk;
+        }
+      } finally {
+        reader.releaseLock?.();
+      }
+
+      return;
+    }
+
+    for await (const chunk of this._body) {
+      if (!chunk) {
+        continue;
+      }
+      if (typeof chunk === "string") {
+        yield chunk;
+        continue;
+      }
+      yield decoder.decode(chunk, { stream: true });
+    }
+
+    const trailingChunk = decoder.decode();
+    if (trailingChunk.length > 0) {
+      yield trailingChunk;
+    }
+  }
+}
 
 class Luzmo {
   /**
@@ -237,36 +315,32 @@ _onConnect() {
       body: JSON.stringify(data),
     };
 
-    const parseResponseData = (headers, buffer) => {
-      const contentType = headers && headers.get("content-type");
-      const isJSON =
-        !Luzmo._isEmpty(contentType) && contentType.includes("application/json");
-      if (!isJSON) {
-        return buffer;
-      }
-
-      try {
-        return JSON.parse(buffer.toString());
-      } catch (e) {
-        // Invalid JSON payloads are returned as-is for backward compatibility.
-        return buffer;
-      }
-    };
-
     try {
+      const controller = new AbortController();
       const response = await fetch(requestSettings.url, {
         method: requestSettings.method,
         headers: requestSettings.headers,
         body: requestSettings.body,
+        signal: controller.signal,
       });
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
+      const responseFormat = Luzmo._getResponseFormat(response.headers);
 
       if (!response.ok) {
-        throw parseResponseData(response.headers, buffer);
+        const buffer = await Luzmo._readResponseBuffer(response);
+        throw Luzmo._parseBufferedResponse(response.headers, buffer);
       }
 
-      return parseResponseData(response.headers, buffer);
+      if (responseFormat === "ndjson" || responseFormat === "sse") {
+        return new LuzmoStream({
+          body: response.body,
+          headers: response.headers,
+          format: responseFormat,
+          controller,
+        });
+      }
+
+      const buffer = await Luzmo._readResponseBuffer(response);
+      return Luzmo._parseBufferedResponse(response.headers, buffer);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "";
       const causeMessage = error instanceof Error && error.cause instanceof Error
@@ -351,6 +425,51 @@ _onConnect() {
  */
   static _compress(payload) {
     return payload;
+  };
+
+  static _getContentType(headers) {
+    const rawContentType = headers && typeof headers.get === "function"
+      ? headers.get("content-type")
+      : headers?.["content-type"];
+    return typeof rawContentType === "string" ? rawContentType.toLowerCase() : "";
+  };
+
+  static _getResponseFormat(headers) {
+    const contentType = Luzmo._getContentType(headers);
+    if (!Luzmo._isEmpty(contentType) && contentType.includes("application/json")) {
+      return "json";
+    }
+    if (contentType.includes("application/x-ndjson") || contentType.includes("application/ndjson")) {
+      return "ndjson";
+    }
+    if (contentType.includes("text/event-stream")) {
+      return "sse";
+    }
+    return "buffer";
+  };
+
+  static _parseBufferedResponse(headers, buffer) {
+    const responseFormat = Luzmo._getResponseFormat(headers);
+
+    if (responseFormat === "ndjson" || responseFormat === "sse") {
+      return buffer.toString("utf8");
+    }
+
+    if (responseFormat !== "json") {
+      return buffer;
+    }
+
+    try {
+      return JSON.parse(buffer.toString());
+    } catch (e) {
+      // Invalid JSON payloads are returned as-is for backward compatibility.
+      return buffer;
+    }
+  };
+
+  static async _readResponseBuffer(response) {
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
   };
 }
 

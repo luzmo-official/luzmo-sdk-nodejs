@@ -11,6 +11,10 @@ function createClient(options = {}) {
   });
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function withApiServer(handler, run) {
   return new Promise((resolve, reject) => {
     const requests = [];
@@ -33,6 +37,49 @@ function withApiServer(handler, run) {
         res.setHeader(headerName, headerValue);
       }
       res.end(response?.body ?? Buffer.alloc(0));
+    });
+
+    server.listen(0, "127.0.0.1", async () => {
+      const address = server.address();
+      const client = createClient({
+        host: "http://127.0.0.1",
+        port: String(address.port),
+      });
+
+      try {
+        await run({ client, requests });
+        server.close((closeError) => (closeError ? reject(closeError) : resolve()));
+      } catch (error) {
+        server.close(() => reject(error));
+      }
+    });
+  });
+}
+
+function withStreamingApiServer(handler, run) {
+  return new Promise((resolve, reject) => {
+    const requests = [];
+    const server = http.createServer(async (req, res) => {
+      const chunks = [];
+      req.on("data", (chunk) => chunks.push(chunk));
+      await new Promise((requestResolve) => req.on("end", requestResolve));
+
+      const request = {
+        method: req.method,
+        url: req.url,
+        headers: req.headers,
+        body: Buffer.concat(chunks),
+      };
+      requests.push(request);
+
+      try {
+        await handler({ request, requests, response: res, requestIndex: requests.length - 1 });
+        if (!res.writableEnded && !res.destroyed) {
+          res.end();
+        }
+      } catch (error) {
+        res.destroy(error);
+      }
     });
 
     server.listen(0, "127.0.0.1", async () => {
@@ -297,6 +344,84 @@ test("returns raw payload for non-JSON content-type", async () => {
     async ({ client }) => {
       const result = await client.get("dashboard", {});
       assert.deepEqual(result, raw);
+    },
+  );
+});
+
+test("returns NDJSON responses as async iterables with headers", async () => {
+  let secondChunkSent = false;
+  const raw = '{"chunk":"hello"}\n{"done":true}\n';
+
+  await withStreamingApiServer(
+    async ({ response }) => {
+      response.statusCode = 200;
+      response.setHeader("content-type", "application/x-ndjson; charset=utf-8");
+      response.setHeader("x-conversation-id", "conv-123");
+      response.write('{"chunk":"hello"}\n');
+      await delay(25);
+      secondChunkSent = true;
+      response.end('{"done":true}\n');
+    },
+    async ({ client }) => {
+      const stream = await client.create("iqmessage", { prompt: "Say hello" });
+
+      assert.equal(stream.format, "ndjson");
+      assert.equal(stream.headers.get("x-conversation-id"), "conv-123");
+      assert.equal(typeof stream.cancel, "function");
+      assert.equal(typeof stream[Symbol.asyncIterator], "function");
+      assert.equal(secondChunkSent, false, "stream should be returned before the response body finishes");
+
+      const chunks = [];
+      for await (const chunk of stream) {
+        chunks.push(chunk);
+      }
+
+      assert.equal(chunks.join(""), raw);
+      assert.equal(secondChunkSent, true);
+    },
+  );
+});
+
+test("returns server-sent event responses as async iterables", async () => {
+  const raw = 'event: update\ndata: {"type":"text_delta","delta":"hello"}\n\ndata: [DONE]\n\n';
+
+  await withStreamingApiServer(
+    async ({ response }) => {
+      response.statusCode = 200;
+      response.setHeader("content-type", "text/event-stream; charset=utf-8");
+      response.write("event: update\n");
+      response.write('data: {"type":"text_delta",');
+      await delay(5);
+      response.write('"delta":"hello"}\n\n');
+      response.end("data: [DONE]\n\n");
+    },
+    async ({ client }) => {
+      const stream = await client.create("aiprompt", { stream: true });
+
+      assert.equal(stream.format, "sse");
+
+      const chunks = [];
+      for await (const chunk of stream) {
+        chunks.push(chunk);
+      }
+
+      assert.equal(chunks.join(""), raw);
+    },
+  );
+});
+
+test("throws NDJSON error payloads as UTF-8 strings", async () => {
+  const raw = '{"error":"Something failed"}\n';
+  await withApiServer(
+    async () => ({
+      status: 400,
+      headers: { "content-type": "application/x-ndjson; charset=utf-8" },
+      body: Buffer.from(raw),
+    }),
+    async ({ client }) => {
+      await assert.rejects(async () => {
+        await client.create("iqmessage", { prompt: "fail" });
+      }, (error) => error === raw);
     },
   );
 });
