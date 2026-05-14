@@ -47,7 +47,7 @@ See `example-embedding.js` for an example of how to use the API to securely embe
 Streaming-compatible responses keep the existing SDK method signatures. When the API responds with `application/x-ndjson`, `application/ndjson`, or `text/event-stream`, the SDK resolves with an async-iterable stream object instead of buffering the full response body. The iterator yields raw UTF-8 text chunks, so callers can parse NDJSON rows or SSE events themselves.
 
 ```js
-const stream = await client.create('aiprompt', payload);
+const stream = await client.create('iqmessage', payload);
 
 const conversationId = stream.headers.get('x-conversation-id');
 
@@ -58,7 +58,7 @@ for await (const chunk of stream) {
 
 The returned stream object exposes:
 
-- `headers`: response headers (for example `x-conversation-id`)
+- `headers`: response headers (some endpoints expose metadata such as `x-conversation-id`)
 - `format`: either `ndjson` or `sse`
 - `cancel()`: aborts the unread response body
 

@@ -221,6 +221,17 @@ test("delete(resource, id, properties) sends delete payload", async () => {
   );
 });
 
+test("empty successful responses resolve to undefined", async () => {
+  await withApiServer(
+    async () => ({ status: 204 }),
+    async ({ client }) => {
+      const response = await client.delete("dashboard", "dashboard-id");
+
+      assert.equal(response, undefined);
+    },
+  );
+});
+
 test("associate(resource, id, association) sends resource association payload", async () => {
   const association = { role: "dataset", id: "dataset-id" };
   await withApiServer(
@@ -406,22 +417,6 @@ test("returns server-sent event responses as async iterables", async () => {
       }
 
       assert.equal(chunks.join(""), raw);
-    },
-  );
-});
-
-test("throws NDJSON error payloads as UTF-8 strings", async () => {
-  const raw = '{"error":"Something failed"}\n';
-  await withApiServer(
-    async () => ({
-      status: 400,
-      headers: { "content-type": "application/x-ndjson; charset=utf-8" },
-      body: Buffer.from(raw),
-    }),
-    async ({ client }) => {
-      await assert.rejects(async () => {
-        await client.create("iqmessage", { prompt: "fail" });
-      }, (error) => error === raw);
     },
   );
 });

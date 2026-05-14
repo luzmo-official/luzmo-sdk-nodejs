@@ -340,6 +340,9 @@ _onConnect() {
       }
 
       const buffer = await Luzmo._readResponseBuffer(response);
+      if (buffer.length === 0) {
+        return undefined;
+      }
       return Luzmo._parseBufferedResponse(response.headers, buffer);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "";
