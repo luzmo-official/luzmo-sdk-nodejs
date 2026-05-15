@@ -62,6 +62,19 @@ The returned stream object exposes:
 - `format`: either `ndjson` or `sse`
 - `cancel()`: aborts the unread response body
 
+The stream class is also exported as `LuzmoStream`, so consumers can distinguish buffered responses from streaming ones:
+
+```js
+const Luzmo = require('@luzmo/nodejs-sdk');
+
+const result = await client.create('iqmessage', payload);
+if (result instanceof Luzmo.LuzmoStream) {
+  for await (const chunk of result) {
+    process.stdout.write(chunk);
+  }
+}
+```
+
 If the response is regular JSON, the SDK keeps the existing behavior and resolves with the parsed JSON value.
 
 ## TS Types

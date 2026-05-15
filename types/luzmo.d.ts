@@ -57,6 +57,21 @@ declare namespace luzmo {
     cancel(): void;
   }
 
+  export interface StreamOptions {
+    headers: StreamHeaders;
+    format: StreamFormat;
+    body?: any;
+    controller?: any;
+  }
+
+  export class LuzmoStream implements Stream {
+    constructor(options: StreamOptions);
+    headers: StreamHeaders;
+    format: StreamFormat;
+    cancel(): void;
+    [Symbol.asyncIterator](): AsyncIterableIterator<string>;
+  }
+
   export type Role =
     | "Accounts"
     | "Aggregations"

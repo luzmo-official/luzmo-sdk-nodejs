@@ -376,6 +376,8 @@ test("returns NDJSON responses as async iterables with headers", async () => {
     async ({ client }) => {
       const stream = await client.create("iqmessage", { prompt: "Say hello" });
 
+      assert.equal(typeof Luzmo.LuzmoStream, "function");
+      assert.equal(stream instanceof Luzmo.LuzmoStream, true);
       assert.equal(stream.format, "ndjson");
       assert.equal(stream.headers.get("x-conversation-id"), "conv-123");
       assert.equal(typeof stream.cancel, "function");
