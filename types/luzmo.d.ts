@@ -7,17 +7,19 @@ declare namespace luzmo {
    * Described the Options object
    * @attr api_key
    * @attr api_token
+   * @attr api_version (Optional)
    * @attr host (Optional)
    * @attr port (Optional)
    */
   export interface Options {
     api_key: UUID;
     api_token: string;
+    api_version?: string;
     host?: string;
     port?: string;
   }
 
-  export type Resource =
+  export type KnownResource =
     | "authorization"
     | "user"
     | "group"
@@ -39,6 +41,36 @@ declare namespace luzmo {
     | "collection"
     | "aichart"
     | "export";
+
+  export type Resource = KnownResource | (string & {});
+
+  export type StreamFormat = "ndjson" | "sse";
+
+  export interface StreamHeaders {
+    get(name: string): string | null;
+    has(name: string): boolean;
+  }
+
+  export interface Stream extends AsyncIterable<string> {
+    headers: StreamHeaders;
+    format: StreamFormat;
+    cancel(): void;
+  }
+
+  export interface StreamOptions {
+    headers: StreamHeaders;
+    format: StreamFormat;
+    body?: any;
+    controller?: any;
+  }
+
+  export class LuzmoStream implements Stream {
+    constructor(options: StreamOptions);
+    headers: StreamHeaders;
+    format: StreamFormat;
+    cancel(): void;
+    [Symbol.asyncIterator](): AsyncIterableIterator<string>;
+  }
 
   export type Role =
     | "Accounts"
